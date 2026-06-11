@@ -1,0 +1,165 @@
+<div id="banner-cookies" class="cookie-container">
+    <div class="cookie-contingut">
+        <p class="cookie-text">
+            Utilitzem cookies pròpies i de tercers amb finalitats analítiques per millorar els nostres serveis mitjançant l'anàlisi dels seus hàbits de navegació. Pot acceptar totes les cookies, rebutjar-les o configurar-les de forma personalitzada. Per a més informació, consulteu la nostra <a href="privacitat.html" target="_blank" class="cookie-enllac">Política de Cookies</a>.
+        </p>
+        <div class="cookie-botons">
+            <button onclick="gestionarCookies('rebutjar')" class="btn-cookie btn-rebutjar">Rebutjar</button>
+            <button onclick="gestionarCookies('configurar')" class="btn-cookie btn-configurar">Configurar</button>
+            <button onclick="gestionarCookies('acceptar')" class="btn-cookie btn-acceptar">Acceptar totes</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .cookie-container {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #1e293b; /* Gris fosc professional */
+        color: #f8fafc;
+        padding: 20px 10px;
+        box-shadow: 0px -4px 20px rgba(0, 0, 0, 0.25);
+        z-index: 99999; /* S'assegura que quedi per sobre de tot */
+        font-family: system-ui, -apple-system, sans-serif;
+        display: none; /* Amagat per defecte, es mostra amb JS */
+    }
+
+    .cookie-contingut {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+
+    /* Quan la pantalla és gran, es posa en format barra horitzontal */
+    @media (min-width: 768px) {
+        .cookie-contingut {
+            flex-direction: row;
+            justify-content: space-between;
+        }
+    }
+
+    .cookie-text {
+        font-size: 14px;
+        line-height: 1.5;
+        margin: 0;
+        text-align: justify;
+        flex: 1;
+    }
+
+    .cookie-enllac {
+        color: #38bdf8; /* Blau cel per als enllaços */
+        text-decoration: underline;
+    }
+
+    .cookie-enllac:hover {
+        color: #7dd3fc;
+    }
+
+    .cookie-botons {
+        display: flex;
+        gap: 10px;
+        width: 100%;
+        justify-content: center;
+    }
+
+    @media (min-width: 768px) {
+        .cookie-botons {
+            width: auto;
+        }
+    }
+
+    /* Estils base dels botons */
+    .btn-cookie {
+        padding: 8px 16px;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: none;
+        white-space: nowrap;
+    }
+
+    .btn-acceptar {
+        background-color: #10b981; /* Verd èxit */
+        color: white;
+    }
+
+    .btn-acceptar:hover {
+        background-color: #059669;
+    }
+
+    .btn-rebutjar {
+        background-color: #ef4444; /* Vermell */
+        color: white;
+    }
+
+    .btn-rebutjar:hover {
+        background-color: #dc2626;
+    }
+
+    .btn-configurar {
+        background-color: #475569; /* Gris clar */
+        color: white;
+    }
+
+    .btn-configurar:hover {
+        background-color: #334155;
+    }
+</style>
+
+<script>
+    // Aquesta funció s'executa automàticament en carregar la pàgina
+    document.addEventListener("DOMContentLoaded", function() {
+        try {
+            // Comprovem si l'usuari ja ha pres una decisió anteriorment
+            const cookieDecision = localStorage.getItem('consentimentCookies');
+            
+            if (!cookieDecision) {
+                // Si no hi ha decisió, mostrem el banner
+                document.getElementById('banner-cookies').style.display = 'block';
+            } else if (cookieDecision === 'acceptar') {
+                // Si ja s'havia acceptat, activem les teves funcions analítiques (ex: Google Analytics)
+                activarScriptsAnalitica();
+            }
+        } catch (e) {
+            // Seguretat per si es prova en local (file://) i el navegador bloqueja localStorage
+            document.getElementById('banner-cookies').style.display = 'block';
+            console.log("Nota: Executant en local. El banner es mostrarà sempre.");
+        }
+    });
+
+    function gestionarCookies(accio) {
+        // Amaguem el banner visualment
+        document.getElementById('banner-cookies').style.display = 'none';
+
+        try {
+            if (accio === 'acceptar') {
+                localStorage.setItem('consentimentCookies', 'acceptar');
+                activarScriptsAnalitica();
+            } else if (accio === 'rebutjar') {
+                localStorage.setItem('consentimentCookies', 'rebutjar');
+                // Aquí es podrien esborrar cookies si ja existissin
+            } else if (accio === 'configurar') {
+                // Redirecció o obertura de modal de configuració (opcional per a nota alta)
+                window.location.href = 'privacitat.html#configuracio';
+            }
+        } catch (e) {
+            alert("Acció processada (en entorn local de proves).");
+        }
+    }
+
+    // Posa dins d'aquesta funció el codi que llança Google Analytics
+    function activarScriptsAnalitica() {
+        console.log("Cookies acceptades: Activant Google Analytics...");
+        
+        // Exemple: Aquí s'executaria el teu codi de Google (gtag)
+        // window.dataLayer = window.dataLayer || [];
+        // ...
+    }
+</script>
