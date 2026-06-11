@@ -1,24 +1,49 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6WY7M0XGC0"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-6WY7M0XGC0');
+        // Funció per carregar les cookies analítiques si l'usuari accepta
+        function carregarAnalytics() {
+            var script = document.createElement('script');
+            script.async = true;
+            script.src = "https://www.googletagmanager.com/gtag/js?id=G-6WY7M0XGC0";
+            document.head.appendChild(script);
+
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-6WY7M0XGC0');
+        }
+
+        // Comprova si ja s'havia acceptat abans
+        window.onload = function() {
+            if (localStorage.getItem('cookiesAcceptades') === 'true') {
+                carregarAnalytics();
+                document.getElementById('cookieBanner').style.display = 'none';
+            }
+        }
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>I+ Web</title>
-    <!-- Agrega la referencia a Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
+    <style>
+        /* Estils afegits per al banner de cookies */
+        #cookieBanner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #212529;
+            color: white;
+            padding: 20px;
+            z-index: 9999;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.3);
+        }
+    </style>
 </head>
 <body>
 
-<!-- Barra de navegación -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="#">I+ Web</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,21 +63,23 @@
             <li class="nav-item">
                 <a class="nav-link" href="#contacto">Contacte</a>
             </li>
-            
+            <li class="nav-item">
+                <a class="nav-link text-warning" href="avis-legal.html">Avís Legal</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-warning" href="privacitat.html">Privacitat</a>
+            </li>
         </ul>
     </div>
 </nav>
 
-<!-- Sección de Inicio -->
 <section id="inicio" class="container mt-5">
     <h2 align="center">Benvingut a I+ Web</h2>
-    <!-- Imagen -->
     <img src="img/main.jpg" alt="Imatge inici" class="img-fluid mb-3">
     <p align="center">Especialistes en Disseny Web i eCommerce.</p>
     <h3 align="center">Impulsem el teu negoci en el món digital</h3>
 </section>
 
-<!-- Sección de Servicios -->
 <section id="servicios" class="container mt-5">
     <h2>Els nostres serveis</h2>
     <div class="row">
@@ -74,7 +101,6 @@
     </div>
 </section>
 
-<!-- Sección de Acerca de Nosotros -->
 <section id="acerca" class="container mt-5">
     <h2>Sobre nosaltres</h2>
     <img src="img/about-us.jpg" alt="Imatge sobre nosaltres" class="img-fluid mb-3">
@@ -83,84 +109,104 @@
     <p>Telèfon: +34 555 555 555</p>
     <p>Correu de Contacte: info@i+web.com</p>
 
-    <!-- Google Maps -->
     <div class="map-responsive">
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2986.891551493971!2d2.4314594761544495!3d41.52828972128234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4b565bfd5ea1b%3A0xff71229e2b390603!2sEdifici%20TCM3!5e0!3m2!1ses!2ses!4v1704295322822!5m2!1ses!2ses" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
 </section>
 
-<!-- Sección de Contacto -->
 <section id="contacto" class="container mt-5">
     <h2>Contacte</h2>
-    <!-- Imagen -->
     <img src="img/contacte.jpg" alt="Imatge de Contacte" class="img-fluid mb-3">
 
     <p>Omple el següent formulari per enviar la teva consulta </p>
     <form id="contactForm" onsubmit="enviarFormulario(); return false;">
-        <!-- Campo de Nombre -->
         <div class="form-group">
             <label for="nombre">Nom:</label>
             <input type="text" class="form-control" id="nombre" name="nombre" required>
         </div>
 
-        <!-- Campo de Correo Electrónico -->
         <div class="form-group">
             <label for="correo">Correu Electrònic:</label>
             <input type="email" class="form-control" id="correo" name="correo" required>
         </div>
         
-        <!-- Campo de Número de Teléfono -->
         <div class="form-group">
             <label for="telefono">Número de Telèfon:</label>
             <input type="tel" class="form-control" id="telefono" name="telefono" required>
         </div>
-        <!-- Campo de Asunto -->
         <div class="form-group">
             <label for="asunto">Assumpte:</label>
-            <textarea class="form-control" id="message" name="message" rows="4" cols="50" required>
-            </textarea>
+            <textarea class="form-control" id="message" name="message" rows="4" cols="50" required></textarea>
         </div>
-        <!-- Botón de Enviar -->
+
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="politicaCheck" required>
+            <label class="form-check-label" for="politicaCheck">
+                He llegit i accepto la <a href="privacitat.html" target="_blank">Política de Privacitat</a>.
+            </label>
+        </div>
+        <p class="small text-muted"><em>Responsable: I+ Web S.A. | Finalitat: Respondre la consulta | Drets: Accés, rectificació i supressió via info@i+web.com.</em></p>
+
         <button type="submit" class="btn btn-primary">Enviar</button>
     </form>
     <div id="resultado" class="mt-3"></div>
 </section>
 
-<!-- Pie de página -->
+<div id="cookieBanner" class="container-fluid">
+    <div class="row align-items-center">
+        <div class="col-md-8 text-left">
+            <p class="mb-0 p-2">Utilitzem cookies d'analítica de tercers (Google Analytics) per millorar la teva experiència. Pots acceptar-les, rebutjar-les o saber-ne més a la nostra <a href="privacitat.html" class="text-info">Política de Cookies</a>.</p>
+        </div>
+        <div class="col-md-4 text-right">
+            <button onclick="acceptarCookies()" class="btn btn-success btn-sm mr-2">Acceptar</button>
+            <button onclick="rebutjarCookies()" class="btn btn-danger btn-sm">Rebutjar</button>
+        </div>
+    </div>
+</div>
+
 <footer class="footer bg-dark text-white mt-5 p-4 text-center">
     <p>© 2025 I+ Web S.A. Tots els drets reservats.</p>
+    <p class="small">
+        <a href="avis-legal.html" class="text-secondary mx-2">Avís Legal</a> | 
+        <a href="privacitat.html" class="text-secondary mx-2">Política de Privacitat i Cookies</a>
+    </p>
 </footer>
 
 <script>
+    // Controls de lògica de cookies
+    function acceptarCookies() {
+        localStorage.setItem('cookiesAcceptades', 'true');
+        document.getElementById('cookieBanner').style.display = 'none';
+        carregarAnalytics();
+    }
+
+    function rebutjarCookies() {
+        localStorage.setItem('cookiesAcceptades', 'false');
+        document.getElementById('cookieBanner').style.display = 'none';
+        // No s'executa carregarAnalytics() per tant es bloquegen.
+    }
+
+    // Formulari original mantingut
     function enviarFormulario() {
-        // Obtiene los valores de los campos
         var nombre = document.getElementById("nombre").value;
         var correo = document.getElementById("correo").value;
         var telefono = document.getElementById("telefono").value;
 
-        // Realiza la validación simple (puedes mejorarla según tus necesidades)
         if (nombre === "" || correo === "" || telefono === "") {
             document.getElementById("resultado").innerHTML = "<div class='alert alert-danger'>Si us plau, completa tots els camps.</div>";
         } else {
-            // Simula el envío del formulario
             document.getElementById("resultado").innerHTML = "<div class='alert alert-success'>¡Formulari enviat amb èxit!</div>";
-
-            // Puedes agregar aquí el código para enviar los datos al servidor (AJAX, Fetch, etc.)
-            // Limpia el formulario
             document.getElementById("contactForm").reset();
-
-            // Vuelve a la página index.html después de 2 segundos (puedes ajustar este tiempo)
             setTimeout(function(){
                 window.location.href = "index.html";
             }, 2000);
         }
     }
 </script>
-<!-- Agrega la referencia a Bootstrap JS y Popper.js -->
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
-
 </html>
